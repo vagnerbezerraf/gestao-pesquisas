@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\QuestionController as WebQuestionController;
 use App\Http\Controllers\Web\AnswerController as WebAnswerController;
 use App\Http\Controllers\Web\GroupController as WebGroupController;
 use App\Http\Controllers\Web\InviteController as WebInviteController;
+use App\Http\Controllers\Web\QuestionGroupController as WebQuestionGroupController;
 use App\Http\Controllers\Web\AuthController;
 
 Route::get('/', function () {
@@ -22,8 +23,11 @@ Route::post('register', [AuthController::class,'register'])->name('register.subm
 Route::middleware('auth')->group(function () {
     Route::resource('surveys', WebSurveyController::class);
     Route::resource('questions', WebQuestionController::class);
+    Route::resource('question-groups', WebQuestionGroupController::class);
     Route::resource('answers', WebAnswerController::class);
-    Route::resource('groups', WebGroupController::class);
-    Route::resource('invites', WebInviteController::class);
+    Route::delete('invites/mass-destroy', [WebInviteController::class,'massDestroy'])->name('invites.massDestroy');
+    Route::post('invites/mass-send', [WebInviteController::class,'massSend'])->name('invites.massSend');
     Route::post('invites/{invite}/send', [WebInviteController::class,'send'])->name('invites.send');
+    Route::resource('invites', WebInviteController::class);
+    Route::resource('groups', WebGroupController::class);
 });

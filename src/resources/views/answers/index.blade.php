@@ -29,11 +29,15 @@
             <td><pre>{{ json_encode($answer->value) }}</pre></td>
             <td>{{ $answer->created_at->format('d/m/Y') }}</td>
             <td>
-                <a href="{{ route('answers.show', $answer) }}" class="btn btn-sm btn-secondary">View</a>
-                <form action="{{ route('answers.destroy', $answer) }}" method="POST" class="d-inline" x-on:submit.prevent="confirmDelete ? $el.submit() : confirmDelete = true">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-danger" x-text="confirmDelete ? 'Confirm?' : 'Delete'"></button>
-                </form>
+                @can('view', $answer)
+                    <a href="{{ route('answers.show', $answer) }}" class="btn btn-sm btn-secondary">View</a>
+                @endcan
+                @can('delete', $answer)
+                    <form action="{{ route('answers.destroy', $answer) }}" method="POST" class="d-inline" x-on:submit.prevent="confirmDelete ? $el.submit() : confirmDelete = true">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger" x-text="confirmDelete ? 'Confirm?' : 'Delete'"></button>
+                    </form>
+                @endcan
             </td>
         </tr>
         @endforeach

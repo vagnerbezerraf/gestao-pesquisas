@@ -13,11 +13,24 @@
           <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Login</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/register') }}">Register</a></li>
         @else
+          @can('viewAny', App\Models\Survey::class)
           <li class="nav-item"><a class="nav-link" href="{{ url('/surveys') }}">Surveys</a></li>
+          @endcan
+          @can('viewAny', App\Models\Question::class)
           <li class="nav-item"><a class="nav-link" href="{{ url('/questions') }}">Questions</a></li>
+          @endcan
+          @can('viewAny', App\Models\Answer::class)
           <li class="nav-item"><a class="nav-link" href="{{ url('/answers') }}">Answers</a></li>
+          @endcan
+          @can('viewAny', App\Models\Group::class)
           <li class="nav-item"><a class="nav-link" href="{{ url('/groups') }}">Groups</a></li>
+          @endcan
+          @can('viewAny', App\Models\QuestionGroup::class)
+          <li class="nav-item"><a class="nav-link" href="{{ url('/question-groups') }}">Question Groups</a></li>
+          @endcan
+          @can('viewAny', App\Models\Invite::class)
           <li class="nav-item"><a class="nav-link" href="{{ url('/invites') }}">Invites</a></li>
+          @endcan
           <li class="nav-item">
             <form method="POST" action="{{ url('/logout') }}">
               @csrf

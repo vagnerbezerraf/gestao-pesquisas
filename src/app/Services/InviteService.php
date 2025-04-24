@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Invite;
 use App\Models\Answer;
+use App\Models\Group;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SurveyInviteMail;
@@ -21,10 +22,19 @@ class InviteService
         return Invite::findOrFail($id);
     }
 
-    public function create(array $data): Invite
+    public function create(array $data): Collection
     {
-        $data['token'] = (string) Str::uuid();
-        return Invite::create($data);
+        // Cria um invite para cada e-mail do grupo
+        $group = Group::findOrFail($data['group_id']);
+        $invites = [];
+        foreach ($group->emails ?? [] as $email) {
+            $invites[] = Invite::create([
+                'survey_id' => $data['survey_id'],
+                'group_id'  => $data['group_id'],
+                'email'     => $email,
+            ]);
+        }
+        return new Collection($invites);
     }
 
     public function update(int $id, array $data): Invite
@@ -42,6 +52,7 @@ class InviteService
     public function send(int $id): Invite
     {
         $invite = $this->find($id);
+        // Envia apenas para o e-mail associado ao invite
         Mail::to($invite->email)->send(new SurveyInviteMail($invite));
         $invite->update(['sent_at' => now()]);
         return $invite;

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class StoreInviteRequest extends FormRequest
+class UpdateQuestionGroupRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,16 +15,16 @@ class StoreInviteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'survey_id' => 'required|exists:surveys,id',
-            'group_id' => 'required|exists:groups,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'survey_id' => 'id da pesquisa',
-            'group_id' => 'id do grupo',
+            'name' => 'nome',
+            'description' => 'descrição',
         ];
     }
 }

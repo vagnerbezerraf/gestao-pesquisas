@@ -12,6 +12,17 @@ class StoreGroupRequest extends FormRequest
         return Auth::check();
     }
 
+    /**
+     * Converte string CSV de emails em array antes da validação.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('emails') && !is_array($this->emails)) {
+            $emailsArray = array_filter(array_map('trim', explode(',', $this->emails)));
+            $this->merge(['emails' => $emailsArray]);
+        }
+    }
+
     public function rules(): array
     {
         return [

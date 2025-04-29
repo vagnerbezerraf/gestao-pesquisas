@@ -4,13 +4,13 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Question;
-use App\Models\QuestionGroup;
+use App\Models\QuestionCategory;
 
 class QuestionSeeder extends Seeder
 {
     public function run(): void
     {
-        $group = QuestionGroup::firstOrCreate(
+        $group = QuestionCategory::firstOrCreate(
             ['name' => 'Mapeamento de Saúde Mental'],
             ['description' => 'Grupo de perguntas do formulário de mapeamento de saúde mental.']
         );
@@ -70,7 +70,7 @@ class QuestionSeeder extends Seeder
                 'description' => $text,
                 'type' => 'boolean',
                 'weight' => $weight,
-                'question_group_id' => $group->id,
+                'question_category_id' => $group->id,
             ]);
         }
     }

@@ -22,13 +22,18 @@
             @error('type')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
         <div class="mb-3">
-            <label for="survey_id" class="form-label">Survey</label>
-            <select name="survey_id" id="survey_id" class="form-select @error('survey_id') is-invalid @enderror" required>
-                @foreach($surveys as $s)
-                <option value="{{ $s->id }}">{{ $s->title }}</option>
+            <label for="question_category_id" class="form-label">Category</label>
+            <select name="question_category_id" id="question_category_id" class="form-select @error('question_category_id') is-invalid @enderror" required>
+                @foreach($categories as $category)
+                <option value="{{ $category->id }}" {{ old('question_category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                 @endforeach
             </select>
-            @error('survey_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            @error('question_category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        </div>
+        <div class="mb-3">
+            <label for="weight" class="form-label">Weight</label>
+            <input type="number" name="weight" id="weight" class="form-control @error('weight') is-invalid @enderror" value="{{ old('weight', 1) }}" required>
+            @error('weight')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
         <div class="mb-3" x-data="{ hasOptions: false }">
             <div class="form-check">

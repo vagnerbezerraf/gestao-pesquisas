@@ -30,7 +30,7 @@ class AuthController extends Controller
 
         if ($this->authService->loginWeb($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->route('surveys.index');
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors([
@@ -60,6 +60,6 @@ class AuthController extends Controller
         $user = $this->authService->registerWeb($data);
         Auth::guard('web')->login($user);
         $request->session()->regenerate();
-        return redirect()->route('surveys.index');
+        return redirect()->route('dashboard');
     }
 }

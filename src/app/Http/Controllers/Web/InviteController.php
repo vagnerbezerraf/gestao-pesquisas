@@ -9,6 +9,7 @@ use App\Services\SurveyService;
 use App\Services\GroupService;
 use App\Http\Requests\StoreInviteRequest;
 use App\Models\Invite;
+use Illuminate\Support\Facades\Log;
 
 class InviteController extends Controller
 {
@@ -108,7 +109,7 @@ class InviteController extends Controller
     public function send(Invite $invite)
     {
         $this->authorize('update', $invite);
-        $this->service->send($invite->id);
-        return redirect()->back();
+        $sentInvite = $this->service->send($invite->id);
+        dd($sentInvite->toArray());
     }
 }

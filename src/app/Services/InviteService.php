@@ -9,9 +9,19 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SurveyInviteMail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
+use App\Services\SendPulseService;
+use Illuminate\Support\Facades\Config;
 
 class InviteService
 {
+    private $sendPulse;
+
+    public function __construct(SendPulseService $sendPulseService)
+    {
+        $this->sendPulse = $sendPulseService;
+    }
+
     public function all(): Collection
     {
         return Invite::with('survey','group')->get();
@@ -52,8 +62,21 @@ class InviteService
     public function send(int $id): Invite
     {
         $invite = $this->find($id);
+        Log::info("InviteService::send - starting for invite {$invite->id} to {$invite->email}");
         // Envia apenas para o e-mail associado ao invite
-        Mail::to($invite->email)->send(new SurveyInviteMail($invite));
+        try {
+            if (Config::get('invite.mailer') === 'sendpulse') {
+                $url  = route('survey-response.show', $invite->token);
+                $html = view('emails.survey_invite', ['invite' => $invite, 'url' => $url])->render();
+                $this->sendPulse->sendEmail($invite->email, 'Convite para participar da pesquisa', $html);
+            } else {
+                Mail::to($invite->email)->send(new SurveyInviteMail($invite));
+            }
+            Log::info("InviteService::send - mail sent for invite {$invite->id}");
+        } catch (\Exception $e) {
+            Log::error("InviteService::send - error sending invite {$invite->id}: " . $e->getMessage());
+            throw $e;
+        }
         $invite->update(['sent_at' => now()]);
         return $invite;
     }

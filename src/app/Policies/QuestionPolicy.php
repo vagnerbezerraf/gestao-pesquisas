@@ -25,12 +25,12 @@ class QuestionPolicy
         return true;
     }
 
-    public function update(User $user, Question $question): bool
+    public function update(User $user, Question $question = null): bool
     {
         return true;
     }
 
-    public function delete(User $user, Question $question): bool
+    public function delete(User $user, Question $question = null): bool
     {
         return true;
     }

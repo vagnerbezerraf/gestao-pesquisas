@@ -60,14 +60,6 @@
                 <td>{{ $invite->sent_at?->format('d/m/Y H:i') }}</td>
                 <td>{{ $invite->responded_at?->format('d/m/Y H:i') }}</td>
                 <td>
-                    @can('update', $invite)
-                    @if($invite->status === 'pending')
-                    <form action="{{ route('invites.send', $invite) }}" method="POST" class="d-inline" x-on:submit.prevent="confirmSend ? $el.submit() : confirmSend = true">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-success" x-text="confirmSend ? 'Confirm Send' : 'Send'"></button>
-                    </form>
-                    @endif
-                    @endcan
                     @can('view', $invite)
                         <a href="{{ route('invites.show', $invite) }}" class="btn btn-sm btn-secondary">View</a>
                     @endcan

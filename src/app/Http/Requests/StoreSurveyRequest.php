@@ -18,6 +18,8 @@ class StoreSurveyRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status' => 'required|string|in:draft,published',
+            'questions'   => 'nullable|array',
+            'questions.*' => 'integer|exists:questions,id',
         ];
     }
 
@@ -27,6 +29,7 @@ class StoreSurveyRequest extends FormRequest
             'title' => 'título',
             'description' => 'descrição',
             'status' => 'status',
+            'questions' => 'perguntas',
         ];
     }
 }

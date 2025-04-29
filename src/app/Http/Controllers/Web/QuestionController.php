@@ -6,19 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Services\QuestionService;
-use App\Services\SurveyService;
+use App\Services\QuestionCategoryService;
+use App\Models\Question;
 
 class QuestionController extends Controller
 {
     protected QuestionService $service;
-    protected SurveyService $surveyService;
+    protected QuestionCategoryService $categoryService;
 
-    public function __construct(QuestionService $service, SurveyService $surveyService)
+    public function __construct(QuestionService $service, QuestionCategoryService $categoryService)
     {
         $this->service = $service;
-        $this->surveyService = $surveyService;
+        $this->categoryService = $categoryService;
         $this->middleware('auth');
-        $this->authorizeResource(\App\Models\Question::class, 'question');
+        $this->authorizeResource(Question::class, 'question', ['except' => ['edit', 'update']]);
     }
 
     public function index()
@@ -29,8 +30,8 @@ class QuestionController extends Controller
 
     public function create()
     {
-        $surveys = $this->surveyService->all();
-        return view('questions.create', compact('surveys'));
+        $categories = $this->categoryService->all();
+        return view('questions.create', compact('categories'));
     }
 
     public function store(StoreQuestionRequest $request)
@@ -39,28 +40,28 @@ class QuestionController extends Controller
         return redirect()->route('questions.index');
     }
 
-    public function show(int $id)
+    public function show(Question $question)
     {
-        $question = $this->service->find($id);
+        $question = $this->service->find($question->id);
         return view('questions.show', compact('question'));
     }
 
-    public function edit(int $id)
+    public function edit(Question $question)
     {
-        $question = $this->service->find($id);
-        $surveys = $this->surveyService->all();
-        return view('questions.edit', compact('question', 'surveys'));
+        $question = $this->service->find($question->id);
+        $categories = $this->categoryService->all();
+        return view('questions.edit', compact('question', 'categories'));
     }
 
-    public function update(UpdateQuestionRequest $request, int $id)
+    public function update(UpdateQuestionRequest $request, Question $question)
     {
-        $this->service->update($id, $request->validated());
-        return redirect()->route('questions.show', $id);
+        $this->service->update($question->id, $request->validated());
+        return redirect()->route('questions.show', $question->id);
     }
 
-    public function destroy(int $id)
+    public function destroy(Question $question)
     {
-        $this->service->delete($id);
+        $this->service->delete($question->id);
         return redirect()->route('questions.index');
     }
 }

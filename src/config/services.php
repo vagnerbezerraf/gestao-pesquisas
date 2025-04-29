@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    // SendPulse SMTP email service
+    'sendpulse' => [
+        'user_id'      => env('SENDPULSE_USER_ID'),
+        'secret'       => env('SENDPULSE_SECRET'),
+        'sender_name'  => env('SENDPULSE_SENDER_NAME'),
+        'sender_email' => env('SENDPULSE_SENDER_EMAIL'),
+        'storage_path' => env('SENDPULSE_STORAGE_PATH', storage_path('app/sendpulse.json')),
+    ],
+
 ];

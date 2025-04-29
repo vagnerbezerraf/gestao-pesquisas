@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class QuestionGroup extends Model
+class QuestionCategory extends Model
 {
     use HasFactory;
 
@@ -13,6 +13,6 @@ class QuestionGroup extends Model
 
     public function questions()
     {
-        return $this->hasMany(Question::class);
+        return $this->hasMany(Question::class, 'question_category_id');
     }
 }

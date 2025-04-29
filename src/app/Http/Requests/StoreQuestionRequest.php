@@ -12,6 +12,17 @@ class StoreQuestionRequest extends FormRequest
         return Auth::check();
     }
 
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('options') && is_string($this->options)) {
+            $opts = array_filter(array_map('trim', explode(',', $this->options)));
+            $this->merge(['options' => $opts]);
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -19,7 +30,7 @@ class StoreQuestionRequest extends FormRequest
             'type' => 'required|string',
             'options' => 'nullable|array',
             'weight' => 'required|integer',
-            'question_group_id' => 'required|exists:question_groups,id',
+            'question_category_id' => 'required|exists:question_categories,id',
         ];
     }
 
@@ -30,7 +41,7 @@ class StoreQuestionRequest extends FormRequest
             'type' => 'tipo',
             'options' => 'opções',
             'weight' => 'peso',
-            'question_group_id' => 'grupo de perguntas',
+            'question_category_id' => 'categoria de perguntas',
         ];
     }
 }

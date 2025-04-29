@@ -26,7 +26,7 @@ class SurveyInviteMail extends Mailable
      */
     public function build(): self
     {
-        $url = config('app.url') . '/invite/' . $this->invite->token;
+        $url = route('survey-response.show', $this->invite->token);
 
         return $this->subject('Convite para participar da pesquisa')
                     ->view('emails.survey_invite')

@@ -8,8 +8,15 @@
     @stack('styles')
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body>
-    @include('partials.header')
+<body class="bg-light">
+    <nav class="navbar navbar-light bg-light border-bottom mb-4">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+          <img src="{{ asset('images/logo_3eb.png') }}" alt="Logo" style="max-height:40px;">
+          <span class="fw-bold">{{ config('app.name') }}</span>
+        </a>
+      </div>
+    </nav>
     <main class="container my-4">
         @yield('content')
     </main>

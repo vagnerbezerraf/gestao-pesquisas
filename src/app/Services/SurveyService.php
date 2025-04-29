@@ -9,7 +9,7 @@ class SurveyService
 {
     public function all(): Collection
     {
-        return Survey::all();
+        return Survey::withCount('questions')->get();
     }
 
     public function find(int $id): Survey
@@ -19,13 +19,26 @@ class SurveyService
 
     public function create(array $data): Survey
     {
-        return Survey::create($data);
+        // cria pesquisa e associa perguntas se fornecidas
+        $questions = $data['questions'] ?? [];
+        unset($data['questions']);
+        $survey = Survey::create($data);
+        if (!empty($questions)) {
+            $survey->questions()->sync($questions);
+        }
+        return $survey;
     }
 
     public function update(int $id, array $data): Survey
     {
+        // atualiza pesquisa e sincroniza perguntas se fornecidas
+        $questions = $data['questions'] ?? null;
+        unset($data['questions']);
         $survey = $this->find($id);
         $survey->update($data);
+        if (!is_null($questions)) {
+            $survey->questions()->sync($questions);
+        }
         return $survey;
     }
 

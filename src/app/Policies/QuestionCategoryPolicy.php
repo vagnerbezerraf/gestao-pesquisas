@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\QuestionGroup;
+use App\Models\QuestionCategory;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class QuestionGroupPolicy
+class QuestionCategoryPolicy
 {
     use HandlesAuthorization;
 
@@ -15,7 +15,7 @@ class QuestionGroupPolicy
         return true;
     }
 
-    public function view(User $user, QuestionGroup $questionGroup): bool
+    public function view(User $user, QuestionCategory $category): bool
     {
         return true;
     }
@@ -25,12 +25,12 @@ class QuestionGroupPolicy
         return true;
     }
 
-    public function update(User $user, QuestionGroup $questionGroup): bool
+    public function update(User $user, QuestionCategory $category): bool
     {
         return true;
     }
 
-    public function delete(User $user, QuestionGroup $questionGroup): bool
+    public function delete(User $user, QuestionCategory $category): bool
     {
         return true;
     }

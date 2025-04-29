@@ -19,7 +19,7 @@ class UpdateQuestionRequest extends FormRequest
             'type' => 'sometimes|required|string',
             'options' => 'nullable|array',
             'weight' => 'sometimes|required|integer',
-            'question_group_id' => 'sometimes|required|exists:question_groups,id',
+            'question_category_id' => 'sometimes|required|exists:question_categories,id',
         ];
     }
 
@@ -30,7 +30,18 @@ class UpdateQuestionRequest extends FormRequest
             'type' => 'tipo',
             'options' => 'opções',
             'weight' => 'peso',
-            'question_group_id' => 'grupo de perguntas',
+            'question_category_id' => 'categoria de perguntas',
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('options') && is_string($this->options)) {
+            $opts = array_filter(array_map('trim', explode(',', $this->options)));
+            $this->merge(['options' => $opts]);
+        }
     }
 }

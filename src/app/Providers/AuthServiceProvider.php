@@ -10,13 +10,11 @@ use App\Models\Answer;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Invite;
-use App\Models\QuestionGroup;
 use App\Policies\SurveyPolicy;
 use App\Policies\QuestionPolicy;
 use App\Policies\AnswerPolicy;
 use App\Policies\GroupPolicy;
 use App\Policies\InvitePolicy;
-use App\Policies\QuestionGroupPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -31,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Answer::class => AnswerPolicy::class,
         Group::class => GroupPolicy::class,
         Invite::class => InvitePolicy::class,
-        QuestionGroup::class => QuestionGroupPolicy::class,
+        // QuestionGroup removed
     ];
 
     /**

@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAnswerRequest;
 use App\Services\AnswerService;
+use Illuminate\Http\Request;
+use App\Models\Survey;
+use App\Models\Question;
+use App\Models\Answer;
 
 class AnswerController extends Controller
 {
@@ -17,10 +21,20 @@ class AnswerController extends Controller
         $this->authorizeResource(\App\Models\Answer::class, 'answer');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $answers = $this->service->all();
-        return view('answers.index', compact('answers'));
+        // Aplica filtros de pesquisa e pergunta
+        $query = Answer::with('survey','question','user');
+        if ($request->filled('survey_id')) {
+            $query->where('survey_id', $request->survey_id);
+        }
+        if ($request->filled('question_id')) {
+            $query->where('question_id', $request->question_id);
+        }
+        $answers = $query->get();
+        $surveys = Survey::pluck('title','id');
+        $questions = Question::pluck('text','id');
+        return view('answers.index', compact('answers','surveys','questions'));
     }
 
     public function create()

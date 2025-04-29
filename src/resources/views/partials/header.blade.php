@@ -11,7 +11,6 @@
       <ul class="navbar-nav ms-auto">
         @guest
           <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Entrar</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url('/register') }}">Registrar</a></li>
         @else
           <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Painel</a></li>
           @can('viewAny', App\Models\Survey::class)
